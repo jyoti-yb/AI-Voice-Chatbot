@@ -1,19 +1,34 @@
-const express = require('express'); // Import the Express module
-const path = require('path'); // Import path module to handle file paths
+const express = require('express');
+const app = express();
+const apiai = require('apiai')(APIAI_TOKEN);
 
-const app = express(); // Create an Express application
-const PORT = process.env.PORT || 3000; // Set the server port
 
-// Serve static files from the "public" directory
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(__dirname + '/views')); // html
+app.use(express.static(__dirname + '/public')); // js, css, images
 
-// Route to serve the HTML file
+const server = app.listen(5000);
 app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, 'views', 'index.html'));
+  res.sendFile('index.html');
 });
+io.on('connection', function(socket) {
+  socket.on('chat message', (text) => {
 
-// Start the server and listen on the specified port
-app.listen(PORT, () => {
-  console.log(`Server is running on http://localhost:${PORT}`);
+    // Get a reply from API.AI
+
+    let apiaiReq = apiai.textRequest(text, {
+      sessionId: APIAI_SESSION_ID
+    });
+
+    apiaiReq.on('response', (response) => {
+      let aiText = response.result.fulfillment.speech;
+      socket.emit('bot reply', aiText); // Send the result back to the browser!
+    });
+
+    apiaiReq.on('error', (error) => {
+      console.log(error);
+    });
+
+    apiaiReq.end();
+
+  });
 });
-
