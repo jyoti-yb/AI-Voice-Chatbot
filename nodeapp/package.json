@@ -1,15 +1,19 @@
 {
-  "name": "nodeapp",
+  "name": "web-speech-ai",
   "version": "1.0.0",
+  "description": "Simple AI Chat Bot Demo with Web Speech API",
   "main": "index.js",
   "scripts": {
+    "start": "node index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "description": "",
+  "author": "Tomomi Imura",
+  "license": "MIT",
   "dependencies": {
-    "express": "^4.19.2"
+    "apiai": "^4.0.2",
+    "dotenv": "^4.0.0",
+    "ejs": "^2.5.6",
+    "express": "^4.15.2",
+    "socketio": "^1.0.0"
   }
 }
